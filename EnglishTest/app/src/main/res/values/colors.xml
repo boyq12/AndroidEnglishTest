@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary_old">#3F51B5</color>
+    <color name="colorPrimaryDark_old">#303F9F</color>
+
+    <color name="colorPrimary">#4285F4</color>
+    <color name="colorPrimaryDark">#3B77DB</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Add more -->
+    <color name="primary">#8A0829</color>
+    <color name="primary_dark">#610B21</color>
+    <color name="primary_darker">#3B0B17</color>
+    <color name="accent">#FFFFFF</color>
+
+    <color name="button_login">#7caf00</color>
+    <color name="black">#000000</color>
+    <color name="jet">#222222</color>
+    <color name="oil">#333333</color>
+    <color name="monsoon">#777777</color>
+    <color name="jumbo">#888888</color>
+    <color name="aluminum">#999999</color>
+    <color name="base">#AAAAAA</color>
+    <color name="iron">#CCCCCC</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="iron_light">#E6E6E6</color>
+</resources>
