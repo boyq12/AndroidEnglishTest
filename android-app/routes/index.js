@@ -1,59 +1,63 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-var mongo = require('mongodb');
-var mongoClient = mongo.MongoClient;
-var assert = require('assert');
-var url = 'mongodb://localhost:27017/android-user';
-/*var Server = mongo.Server,
-	Db = mongo.Db,
-	BSon = mongo.BSonPure;
-var server = new Server('localhost', 27017, {auto_reconnect: true});
-db = new Db('android-user', server);*/
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 
-router.post('/login', function(req, res) {
-    mongoClient.connect(url, function(err, db) {
-    console.log("Connecting.....")
-    if (!err) {
-        console.log("Connected to database");
-    }
-    var account = db.collection('account');
-    var username = req.body.username;
-    account.find(req.body, function(err, count) {
-        // body...
-        res.send(count.length);
-    });
-    db.close();
-    }); 
-    
+var url = 'mongodb://localhost:27017/android';
+
+
+//connect to Database
+mongoose.connect(url);
+var AccountSchema = new Schema ({
+    username:String,
+    password:String,
+    email:String
 });
-router.post('/register',function(req,res){
- 	mongoClient.connect(url, function(err, db) {
-    console.log("Connecting.....")
-    if (!err) {
-        console.log("Connected to database");
-    }
-    var account = db.collection('account');
-    account.insert({
-        name:req.body.username,
-        password:req.body.password,
-        email:req.body.email
+
+//log in API
+router.post('/login', function(req, res) {
+    var Account = mongoose.model('Account', AccountSchema, 'accounts');
+    Account.find({'username':req.body.username}, function(err, docs){
+        console.log(docs);
+        if(docs.length>0){
+            res.send('login success');
+        }
+        else {
+            res.send('fail to login');
+        }
     });
-    res.send("success");
-    db.close();
-    }); 
+});
+
+
+//regiser API
+router.post('/register',function(req, res) {
+    /*optional stuff to do after success */
+    var Account = mongoose.model('Account', AccountSchema, 'accounts');
+    var new_user = new Account({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+    });
+    new_user.save(function(err,data) {
+        // body...
+        if(err) console.log(err);
+        else console.log('register success');
+    });
 }); 
-router.post('/resetpassword',function(req,res){
-    mongoClient.connect(url, function(err, db) {
-    console.log("Connecting.....")
-    if (!err) {
-        console.log("Connected to database");
-    }
-    var account = db.collection('account');
-    account.findOneAndUpdate({name:req.body.name},{password:'1234566'});
-    res.send("success");
-    db.close();
-    }); 
-}); 
+router.post('/resetpassword', function(req, res) {
+    /*optional stuff to do after success */
+    var Account = mongoose.model('Account', AccountSchema, 'accounts');
+    Account.findOneAndUpdate({'username': req.body.username}, {'password': 'xac_cmn_dinh'}, function(err, data){
+        if(err) {
+            console.log(err);
+            res.send('can change password');
+        }
+        else{
+            res.send('change success');
+        }
+    });
+});
+    
 module.exports = router;
